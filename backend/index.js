@@ -11,19 +11,26 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, './resources/openweathermap.json');
-const data = fs.readFileSync(filePath, 'utf8');
 
 app.get('/openweathermap', (req, res) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      res.status(500).json({ error: 'Could not read file' });
+      return;
+    }
 
-  console.log(req.body);
+    const cityList = JSON.parse(data).list;
+    const firstLetter = req.body.city.toLowerCase();
 
-  const firstLetter = req.body.city;
+    const filteredList = cityList.filter((city) => 
+      city.name.toLowerCase().startsWith(firstLetter)
+    );
 
-  console.log('First letter:', firstLetter);
-  console.log(data);
-  res.setHeader('Content-Type', 'application/json');
-  res.send(data);
+    const cities = filteredList.map((city) => city.name);
 
+    res.setHeader('Content-Type', 'application/json');
+    res.send(cities);
+  });
 });
 
 app.post('/city', (req, res) => {
