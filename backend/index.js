@@ -2,8 +2,10 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 const PORT = 3000;
 
 
