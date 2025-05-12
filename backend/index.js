@@ -14,15 +14,16 @@ const filePath = path.join(__dirname, './resources/openweathermap.json');
 const data = fs.readFileSync(filePath, 'utf8');
 
 app.get('/openweathermap', (req, res) => {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      res.status(500).json({ error: 'Could not read file' });
-      return;
-    }
-  
-    res.setHeader('Content-Type', 'application/json');
-    res.send(data);
-  });
+
+  console.log(req.body);
+
+  const firstLetter = req.body.city;
+
+  console.log('First letter:', firstLetter);
+  console.log(data);
+  res.setHeader('Content-Type', 'application/json');
+  res.send(data);
+
 });
 
 app.post('/city', (req, res) => {
