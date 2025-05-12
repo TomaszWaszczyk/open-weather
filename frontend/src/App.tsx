@@ -53,7 +53,7 @@ function App() {
         />
         <ul>
           {citiesData.map((city, index) => (
-            <li key={index}>{city}</li>
+            <li className="filteredCities" key={index}>{city}</li>
           ))}
         </ul>
       </div>
