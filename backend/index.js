@@ -3,34 +3,33 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-
 const app = express();
 const PORT = 3000;
-app.use(express.json());
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, './resources/openweathermap.json');
+
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+const filePath = path.join(dirname, './resources/openweathermap.json');
+
+let cityList = [];
+try {
+  const data = fs.readFileSync(filePath, 'utf8');
+  cityList = JSON.parse(data).list;
+} catch (err) {
+  console.error('Could not read or parse the city data file:', err);
+}
 
 app.get('/openweathermap', (req, res) => {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      res.status(500).json({ error: 'Could not read file' });
-      return;
-    }
+  const prefix = (req.query.city || '').toLowerCase();
 
-    const cityList = JSON.parse(data).list;
-    const firstLetter = req.body.city.toLowerCase();
+  const filtered = cityList.filter(city =>
+    city.name.toLowerCase().startsWith(prefix)
+  );
 
-    const filteredList = cityList.filter((city) => 
-      city.name.toLowerCase().startsWith(firstLetter)
-    );
+  // Return only city names
+  const filteredCityNames = filtered.map(city => city.name);
 
-    const cities = filteredList.map((city) => city.name);
-
-    res.setHeader('Content-Type', 'application/json');
-    res.send(cities);
-  });
+  res.json(filteredCityNames);
 });
 
 app.listen(PORT, () => {
