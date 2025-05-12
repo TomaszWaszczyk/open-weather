@@ -33,18 +33,6 @@ app.get('/openweathermap', (req, res) => {
   });
 });
 
-app.post('/city', (req, res) => {
-    const { city } = req.body;
-
-    console.log('Received city:', city);
-
-    if (!city) {
-        return res.status(400).json({ error: 'City is required' });
-    }
-
-    res.json({ message: `City ${city} received` });
-});
-
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
