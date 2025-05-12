@@ -1,16 +1,38 @@
-import { use, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
+  const [citiesData, setCitiesData] = useState<string[]>([]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     console.log(event.target.value);
   };
 
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      if (inputValue) {
+        try {
+          const response = await fetch(
+            `http://localhost:3000/openweathermap?city=${inputValue}`
+          );
+          const data = await response.json();
+          setCitiesData(data);
+          console.log(data);
+        } catch (error) {
+          console.error("Error fetching weather data:", error);
+        }
+      } else {
+        //clear the cities
+        setCitiesData([]);
+      }
+    };
+
+    fetchWeatherData();
+  }, [inputValue]);
 
   return (
     <>
@@ -29,9 +51,14 @@ function App() {
           onChange={handleChange}
           placeholder="Type city name"
         />
+        <ul>
+          {citiesData.map((city, index) => (
+            <li key={index}>{city}</li>
+          ))}
+        </ul>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
