@@ -21,7 +21,6 @@ function App() {
           );
           const data = await response.json();
           setCitiesData(data);
-          console.log(data);
         } catch (error) {
           console.error("Error fetching weather data:", error);
         }
