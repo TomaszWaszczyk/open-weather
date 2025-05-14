@@ -5,7 +5,7 @@ import "./App.css";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
-  const [citiesData, setCitiesData] = useState<string[]>([]);
+  const [citiesData, setCitiesData] = useState<City[]>([]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -53,7 +53,9 @@ function App() {
         />
         <ul>
           {citiesData.map((city, index) => (
-            <li className="filteredCities" key={index}>{city}</li>
+            <li className="filteredCities" key={index}>
+              {city}
+            </li>
           ))}
         </ul>
       </div>
