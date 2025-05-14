@@ -52,11 +52,15 @@ function App() {
           placeholder="Type city name"
         />
         <ul>
-          {citiesData.map((city, index) => (
-            <li className="filteredCities" key={index}>
-              {city.name}
-            </li>
-          ))}
+          {citiesData.length > 0 ? (
+            citiesData.map((city, index) => (
+              <li className="filteredCities" key={index}>
+                {city.name}
+              </li>
+            ))
+          ) : (
+            <p>No filtered cities.</p> 
+          )}
         </ul>
       </div>
     </>
