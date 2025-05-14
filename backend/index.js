@@ -28,10 +28,7 @@ app.get('/openweathermap', (req, res) => {
     city.name.toLowerCase().startsWith(prefix)
   );
 
-  // Return only city names
-  const filteredCityNames = filtered.map(city => city.name);
-
-  res.json(filteredCityNames);
+  res.json(filtered);
 });
 
 app.listen(PORT, () => {
