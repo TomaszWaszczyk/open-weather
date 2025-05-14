@@ -54,7 +54,7 @@ function App() {
         <ul>
           {citiesData.map((city, index) => (
             <li className="filteredCities" key={index}>
-              {city}
+              {city.name}
             </li>
           ))}
         </ul>
